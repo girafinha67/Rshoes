@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rshoes — Sneakers & Streetwear | São Luís</title>
+<meta name="description" content="Rshoes — Sneakers selecionados em São Luís, Maranhão. Descubra nossa coleção.">
+<meta property="og:title" content="Rshoes — Sneakers & Streetwear | São Luís">
+<meta property="og:description" content="Sneakers selecionados em São Luís, Maranhão.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffffff'/%3E%3Crect x='4' y='4' width='92' height='92' fill='none' stroke='%230a0a0a' stroke-width='6'/%3E%3Ctext x='50' y='68' font-size='56' fill='%230a0a0a' text-anchor='middle' font-family='Arial' font-weight='bold'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.manifesto{background:var(--ink);color:#fff}
+.manifesto .grid{display:grid;grid-template-columns:1fr;gap:32px}
+.manifesto h2{font-size:clamp(2.2rem,6vw,4.4rem);text-transform:uppercase}
+.manifesto p{max-width:420px;font-size:1rem;color:var(--mute-dark);margin-top:6px}
+@media(min-width:860px){.manifesto .grid{grid-template-columns:1.4fr 1fr;align-items:end}.manifesto p{margin-top:0}}
+</style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="shoe" viewBox="0 0 200 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 78 C8 62 22 58 34 56 C50 53 58 44 66 34 C74 24 84 18 98 18 C110 18 116 24 122 30 C130 38 140 42 154 44 C170 46 186 52 190 66 C192 74 188 80 178 82 L20 82 C12 82 8 82 8 78 Z"/>
+    <path d="M34 56 C42 62 56 66 76 66 C104 66 128 60 146 50"/>
+    <path d="M66 34 L78 52 M84 27 L94 50 M100 21 L108 52"/>
+    <path d="M8 78 L190 78" stroke-width="1.2" opacity=".5"/>
+  </symbol>
+</svg>
+
+<div class="topbar" id="topbar"><div class="topbar-track" id="topbarTrack"><span>Carregando…</span></div></div>
+
+<header class="site-header" id="siteHeader">
+  <div class="bar">
+    <a class="logo" href="/index.html"><img class="logo-img" src="/assets/logo.png" alt="Rshoes"></a>
+    <nav class="main">
+      <a class="active" href="/index.html">Home</a>
+      <a href="/catalogo.html">Loja</a>
+      <a href="/index.html#sobre">Sobre nós</a>
+    </nav>
+    <div class="h-actions">
+      <button class="icon-btn search-only" id="searchToggle" aria-label="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+      <a class="icon-btn" href="/favoritos.html" aria-label="Favoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 5 5.4 5c2 0 3.4 1 4.6 2.6C11.2 6 12.6 5 14.6 5 18 5 19.6 8.4 18 11.7 15.5 16.4 12 21 12 21z"/></svg><span class="icon-badge" id="favBadge">0</span></a>
+      <button class="icon-btn" id="cartToggle" aria-label="Carrinho"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16l-1.5 12h-13z"/><path d="M8 7a4 4 0 0 1 8 0"/></svg><span class="icon-badge" id="cartBadge">0</span></button>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobileMenu">
+  <button class="mm-close" id="mmClose" aria-label="Fechar menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <a href="/index.html">Home</a>
+  <a href="/catalogo.html">Loja</a>
+  <a href="/favoritos.html">Favoritos</a>
+  <a href="/index.html#sobre">Sobre nós</a>
+</nav>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel">
+    <div class="search-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Buscar produtos, marcas…" autocomplete="off">
+      <button class="search-close" id="searchClose" aria-label="Fechar busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="drawer-scrim" id="cartScrim"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Carrinho">
+  <div class="drawer-head"><h2>Carrinho</h2><button class="drawer-close" id="cartClose" aria-label="Fechar carrinho"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="drawer-body" id="cartDrawerBody"></div>
+  <div class="drawer-foot" id="cartDrawerFoot"></div>
+</aside>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<section class="hero" id="hero">
+  <div class="hero-carousel" id="heroCarousel"></div>
+</section>
+
+<div class="brands" id="brandsWrap" style="display:none">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:16px">PRINCIPAIS MARCAS</p>
+  </div>
+  <div class="brands-row"><div class="brands-track" id="brandsTrack"></div></div>
+</div>
+
+<section class="section" id="categorias">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Compre por categoria</h2></div>
+    <div class="cat-carousel-wrap">
+      <button class="cat-nav cat-prev" id="catPrev" aria-label="Categoria anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="cat-carousel" id="catGrid">
+        <p style="color:var(--mute)">Carregando categorias…</p>
+      </div>
+      <button class="cat-nav cat-next" id="catNext" aria-label="Próxima categoria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="manifesto section reveal">
+  <div class="wrap grid">
+    <h2>Não é apenas<br>um tênis.<br>É identidade.</h2>
+    <p>A Rshoes nasce de uma cena de rua onde o que você calça diz quem você é. Selecionamos peças que carregam essa linguagem — sem ruído, sem excesso, só forma e intenção.</p>
+  </div>
+</section>
+
+<section class="section" id="destaques">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Mais vendidos</h2><a class="sec-link" href="/catalogo.html">VER CATÁLOGO COMPLETO →</a></div>
+    <div class="products" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="promo-banner" id="promoBanner" style="display:none">
+  <div class="pb-bg" id="promoBg"></div>
+  <div class="wrap">
+    <p class="pb-eyebrow" id="promoEyebrow"></p>
+    <h2 id="promoTitle"></h2>
+    <p id="promoSubtitle"></p>
+    <a class="btn btn-outline" id="promoCta"></a>
+  </div>
+</section>
+
+<section class="section" style="padding-top:56px;padding-bottom:56px">
+  <div class="wrap">
+    <div class="benefits" id="benefitsGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="sobre">
+  <div class="wrap reveal" style="max-width:760px">
+    <p class="eyebrow" style="margin-bottom:14px">SOBRE A RSHOES</p>
+    <h2 style="font-size:clamp(1.8rem,5vw,2.8rem);text-transform:uppercase;margin-bottom:18px">Feita para a cena de São Luís</h2>
+    <p style="color:var(--mute);font-size:1.05rem">A Rshoes é uma loja de tênis localizada em São Luís, Maranhão. Um espaço dedicado a quem entende que sneakers são mais do que calçado — são a forma como a cidade se expressa.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap f-top">
+    <div class="f-brand">
+      <div class="logo"><img class="logo-img" src="/assets/logo.png" alt="Rshoes"></div>
+      <p>Sneakers e streetwear selecionados à mão em São Luís, Maranhão.</p>
+    </div>
+    <div>
+      <h4>Loja</h4>
+      <ul>
+        <li><a href="/catalogo.html">Todos os produtos</a></li>
+        <li><a href="/favoritos.html">Favoritos</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Atendimento</h4>
+      <ul>
+        <li><a href="https://instagram.com/rshoes" target="_blank" rel="noopener">Fale conosco</a></li>
+        <li><a href="/index.html#sobre">Entrega e trocas</a></li>
+        <li><a href="/carrinho.html">Meu carrinho</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="/index.html#sobre">Sobre nós</a></li>
+        <li><a href="https://instagram.com/rshoes" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+    <div class="f-newsletter">
+      <h4>Newsletter</h4>
+      <p>Novidades, lançamentos e ofertas exclusivas.</p>
+      <form id="newsForm" class="f-news-form">
+        <input type="email" id="newsEmail" placeholder="Seu e-mail" required>
+        <button type="submit">ASSINAR</button>
+      </form>
+      <p class="f-news-msg" id="newsMsg">Inscrição confirmada — até já!</p>
+    </div>
+  </div>
+  <div class="wrap f-bottom">
+    <span>© 2026 Rshoes. Todos os direitos reservados.</span>
+    <span>São Luís, MA</span>
+  </div>
+</footer>
+
+<script src="/js/mock-api.js"></script>
+<script src="/js/shop.js"></script>
+<script>
+(function(){
+  // ---- topbar + hero + benefícios + banner (conteúdo editável pelo admin) ----
+  fetch('/api/settings/home').then(function(r){return r.json();}).then(function(content){
+    var track = document.getElementById('topbarTrack');
+    var msgs = content.topbar || [];
+    track.innerHTML = msgs.concat(msgs).map(function(m){ return '<span>'+m+'</span>'; }).join('');
+
+    // Hero: apenas imagens de fundo, com crossfade automático a cada 4s (sem texto/botões).
+    // Também dá pra passar arrastando com o dedo (touch) ou o mouse.
+    var slides = content.hero || [];
+    var heroCarousel = document.getElementById('heroCarousel');
+    function heroBg(s){
+      return s.image
+        ? '<img src="'+s.image+'" alt="">'
+        : '<svg viewBox="0 0 200 100" fill="none" stroke="#0a0a0a" stroke-width="1"><use href="#shoe"/></svg>';
+    }
+    heroCarousel.innerHTML = slides.map(function(s, i){
+      return '<div class="hero-slide'+(i===0?' active':'')+'">'+heroBg(s)+'</div>';
+    }).join('');
+    var heroSlideEls = heroCarousel.querySelectorAll('.hero-slide');
+    if(heroSlideEls.length > 1){
+      var heroIdx = 0;
+      var heroAuto;
+      function heroShow(i){
+        heroSlideEls[heroIdx].classList.remove('active');
+        heroIdx = (i + heroSlideEls.length) % heroSlideEls.length;
+        heroSlideEls[heroIdx].classList.add('active');
+      }
+      function heroNext(){ heroShow(heroIdx+1); }
+      function heroPrev(){ heroShow(heroIdx-1); }
+      function heroRestartAuto(){ clearInterval(heroAuto); heroAuto = setInterval(heroNext, 4000); }
+      heroRestartAuto();
+
+      // arrastar com o dedo (touch)
+      var heroStartX = null;
+      heroCarousel.addEventListener('touchstart', function(e){ heroStartX = e.touches[0].clientX; }, {passive:true});
+      heroCarousel.addEventListener('touchend', function(e){
+        if(heroStartX==null) return;
+        var dx = e.changedTouches[0].clientX - heroStartX;
+        if(Math.abs(dx) > 40){ dx < 0 ? heroNext() : heroPrev(); heroRestartAuto(); }
+        heroStartX = null;
+      }, {passive:true});
+
+      // arrastar com o mouse
+      var heroMouseDownX = null;
+      heroCarousel.addEventListener('mousedown', function(e){ heroMouseDownX = e.clientX; e.preventDefault(); });
+      window.addEventListener('mouseup', function(e){
+        if(heroMouseDownX==null) return;
+        var dx = e.clientX - heroMouseDownX;
+        if(Math.abs(dx) > 40){ dx < 0 ? heroNext() : heroPrev(); heroRestartAuto(); }
+        heroMouseDownX = null;
+      });
+
+      // scroll do mouse/trackpad (roda horizontal ou vertical)
+      var heroWheelLock = false;
+      heroCarousel.addEventListener('wheel', function(e){
+        var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if(Math.abs(delta) < 12 || heroWheelLock) return;
+        heroWheelLock = true;
+        delta > 0 ? heroNext() : heroPrev();
+        heroRestartAuto();
+        setTimeout(function(){ heroWheelLock = false; }, 500);
+      }, {passive:true});
+    }
+
+
+    document.getElementById('benefitsGrid').innerHTML = (content.benefits||[]).map(function(b){
+      return '<div class="benefit"><div class="b-icon">'+b.icon+'</div><div><h3>'+b.title+'</h3><p>'+b.text+'</p></div></div>';
+    }).join('');
+
+    if(content.promoBanner && content.promoBanner.active){
+      var pb = content.promoBanner;
+      document.getElementById('promoEyebrow').textContent = pb.eyebrow || '';
+      document.getElementById('promoTitle').textContent = pb.title || '';
+      document.getElementById('promoSubtitle').textContent = pb.subtitle || '';
+      var cta = document.getElementById('promoCta');
+      cta.textContent = pb.ctaLabel || 'VER OFERTAS';
+      cta.href = pb.ctaLink || '/catalogo.html';
+      document.getElementById('promoBanner').style.display = '';
+    }
+  }).catch(function(){});
+
+  fetch('/api/categories').then(function(r){return r.json();}).then(function(data){
+    var cats = (data && data.categories) || [];
+    var grid = document.getElementById('catGrid');
+    if(!cats.length){ grid.innerHTML = '<p style="color:var(--mute)">Categorias em breve.</p>'; return; }
+    grid.innerHTML = cats.map(function(c){
+      var img = c.image ? '<img src="'+c.image+'" alt="">' : '';
+      return '<a class="cat-circle reveal" href="/catalogo.html?category='+encodeURIComponent(c.slug)+'">'+
+        '<div class="cc-ring">'+img+'</div>'+
+        '<h3>'+c.name+'</h3></a>';
+    }).join('');
+    RSShop.observeReveal(grid);
+    var catPrev = document.getElementById('catPrev'), catNext = document.getElementById('catNext');
+    if(catPrev && catNext){
+      var scrollBy = function(dir){ grid.scrollBy({left: dir * (grid.clientWidth * 0.7), behavior: 'smooth'}); };
+      catPrev.addEventListener('click', function(){ scrollBy(-1); });
+      catNext.addEventListener('click', function(){ scrollBy(1); });
+    }
+  }).catch(function(){});
+
+  var grid = document.getElementById('productGrid');
+  fetch('/api/products?sort=relevant&pageSize=8')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var list = (data && data.products) || [];
+      var brands = (data && data.brands) || [];
+      var brandsTrack = document.getElementById('brandsTrack');
+      if(brands.length){
+        document.getElementById('brandsWrap').style.display = '';
+        var chunk = brands.concat(brands);
+        brandsTrack.innerHTML = chunk.map(function(b){ return '<a href="/catalogo.html?brand='+encodeURIComponent(b)+'">'+b+'</a>'; }).join('');
+      }
+      if(!list.length){
+        grid.innerHTML = '<p style="grid-column:1/-1;color:var(--mute);text-align:center;padding:40px 0">Novas chegadas em breve.</p>';
+        return;
+      }
+      var byId = {}; list.forEach(function(p){ byId[p.id]=p; });
+      grid.innerHTML = list.map(RSShop.productCardHtml).join('');
+      RSShop.wireProductGrid(grid, byId);
+      grid.querySelectorAll('.product-card').forEach(function(el){ el.classList.add('reveal'); });
+      RSShop.observeReveal(grid);
+    })
+    .catch(function(){
+      grid.innerHTML = '<p style="grid-column:1/-1;color:var(--mute);text-align:center;padding:40px 0">Não foi possível carregar os produtos agora.</p>';
+    });
+
+  RSShop.observeReveal(document);
+
+  document.getElementById('newsForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('newsMsg').style.display = 'block';
+    this.reset();
+  });
+})();
+</script>
+</body>
+</html>
