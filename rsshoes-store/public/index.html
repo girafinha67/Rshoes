@@ -189,8 +189,67 @@
 <script src="/js/shop.js"></script>
 <script>
 (function(){
-  // ---- topbar + hero + benefícios + banner (conteúdo editável pelo admin) ----
-  fetch('/api/settings/home').then(function(r){return r.json();}).then(function(content){
+  // ---- Conteúdo real de fallback, embutido na própria página. ----
+  // A home NUNCA fica em branco esperando banco de dados: renderizamos
+  // este conteúdo de imediato, e só substituímos por dados vindos da API
+  // (banco/admin) se ela responder de forma válida a tempo. Se a API não
+  // responder, estiver fora do ar, ou o banco não estiver configurado, o
+  // que já está na tela permanece — nunca gera "Categorias em breve." nem
+  // seções vazias.
+  var FALLBACK_HOME_CONTENT = {
+    topbar: [
+      'FRETE GRÁTIS EM PEDIDOS ACIMA DE R$ 499',
+      'PAGUE COM PIX E GANHE DESTAQUE NA FILA DE ENTREGA',
+    ],
+    hero: [
+      { image: '/assets/hero/air-jordan-11.jpg' },
+      { image: '/assets/hero/nike-jordan1.jpg' },
+      { image: '/assets/hero/puma.jpg' },
+    ],
+    benefits: [
+      { icon: '🚚', title: 'Frete grátis', text: 'Em pedidos acima de R$ 499.' },
+      { icon: '↩️', title: 'Troca fácil', text: 'Até 7 dias após o recebimento.' },
+      { icon: '🔒', title: 'Pagamento seguro', text: 'Pix protegido via PicPay.' },
+      { icon: '🎧', title: 'Suporte', text: 'Atendimento direto pelo WhatsApp.' },
+    ],
+    promoBanner: {
+      active: true,
+      eyebrow: 'POR TEMPO LIMITADO',
+      title: 'Ofertas da Estação',
+      subtitle: 'Até 40% off em modelos selecionados.',
+      ctaLabel: 'VER OFERTAS',
+      ctaLink: '/catalogo.html',
+    },
+  };
+  var FALLBACK_CATEGORIES = [
+    { name: 'Nike', slug: 'nike', image: '/assets/categories/nike.jpg' },
+    { name: 'Adidas', slug: 'adidas', image: '/assets/categories/adidas.jpg' },
+    { name: 'New Balance', slug: 'new-balance', image: '/assets/categories/new-balance.jpg' },
+    { name: 'Infantis', slug: 'infantis', image: '/assets/categories/infantis.jpg' },
+    { name: 'Linha premium', slug: 'linha-premium', image: '/assets/categories/linha-premium.jpg' },
+    { name: 'Vans', slug: 'vans', image: '/assets/categories/vans.jpg' },
+  ];
+
+  // Busca com prazo máximo: se a API não responder de forma válida dentro
+  // de TIMEOUT_MS, seguimos com o fallback em vez de deixar a home esperando.
+  var TIMEOUT_MS = 2500;
+  function fetchJsonWithTimeout(url){
+    var timedOut = { ok: false, data: null };
+    var reqPromise = fetch(url)
+      .then(function(r){
+        return r.json().catch(function(){ return null; }).then(function(data){
+          return { ok: r.ok, data: data };
+        });
+      })
+      .catch(function(){ return { ok: false, data: null }; });
+    var timeoutPromise = new Promise(function(resolve){
+      setTimeout(function(){ resolve(timedOut); }, TIMEOUT_MS);
+    });
+    return Promise.race([reqPromise, timeoutPromise]);
+  }
+
+  // ---- topbar + hero + benefícios + banner ----
+  function renderHome(content){
     var track = document.getElementById('topbarTrack');
     var msgs = content.topbar || [];
     track.innerHTML = msgs.concat(msgs).map(function(m){ return '<span>'+m+'</span>'; }).join('');
@@ -253,11 +312,11 @@
       }, {passive:true});
     }
 
-
     document.getElementById('benefitsGrid').innerHTML = (content.benefits||[]).map(function(b){
       return '<div class="benefit"><div class="b-icon">'+b.icon+'</div><div><h3>'+b.title+'</h3><p>'+b.text+'</p></div></div>';
     }).join('');
 
+    var promoEl = document.getElementById('promoBanner');
     if(content.promoBanner && content.promoBanner.active){
       var pb = content.promoBanner;
       document.getElementById('promoEyebrow').textContent = pb.eyebrow || '';
@@ -266,14 +325,22 @@
       var cta = document.getElementById('promoCta');
       cta.textContent = pb.ctaLabel || 'VER OFERTAS';
       cta.href = pb.ctaLink || '/catalogo.html';
-      document.getElementById('promoBanner').style.display = '';
+      promoEl.style.display = '';
+    } else {
+      promoEl.style.display = 'none';
     }
-  }).catch(function(){});
+  }
 
-  fetch('/api/categories').then(function(r){return r.json();}).then(function(data){
-    var cats = (data && data.categories) || [];
+  renderHome(FALLBACK_HOME_CONTENT);
+  fetchJsonWithTimeout('/api/settings/home').then(function(res){
+    if(res.ok && res.data && Array.isArray(res.data.topbar)){
+      renderHome(res.data);
+    }
+  });
+
+  // ---- categorias ----
+  function renderCategories(cats){
     var grid = document.getElementById('catGrid');
-    if(!cats.length){ grid.innerHTML = '<p style="color:var(--mute)">Categorias em breve.</p>'; return; }
     grid.innerHTML = cats.map(function(c){
       var img = c.image ? '<img src="'+c.image+'" alt="">' : '';
       return '<a class="cat-circle reveal" href="/catalogo.html?category='+encodeURIComponent(c.slug)+'">'+
@@ -281,13 +348,22 @@
         '<h3>'+c.name+'</h3></a>';
     }).join('');
     RSShop.observeReveal(grid);
-    var catPrev = document.getElementById('catPrev'), catNext = document.getElementById('catNext');
-    if(catPrev && catNext){
-      var scrollBy = function(dir){ grid.scrollBy({left: dir * (grid.clientWidth * 0.7), behavior: 'smooth'}); };
-      catPrev.addEventListener('click', function(){ scrollBy(-1); });
-      catNext.addEventListener('click', function(){ scrollBy(1); });
+  }
+
+  renderCategories(FALLBACK_CATEGORIES);
+  fetchJsonWithTimeout('/api/categories').then(function(res){
+    if(res.ok && res.data && Array.isArray(res.data.categories) && res.data.categories.length){
+      renderCategories(res.data.categories);
     }
-  }).catch(function(){});
+  });
+
+  var catPrev = document.getElementById('catPrev'), catNext = document.getElementById('catNext');
+  if(catPrev && catNext){
+    var catGridEl = document.getElementById('catGrid');
+    var scrollBy = function(dir){ catGridEl.scrollBy({left: dir * (catGridEl.clientWidth * 0.7), behavior: 'smooth'}); };
+    catPrev.addEventListener('click', function(){ scrollBy(-1); });
+    catNext.addEventListener('click', function(){ scrollBy(1); });
+  }
 
   var grid = document.getElementById('productGrid');
   fetch('/api/products?sort=relevant&pageSize=8')

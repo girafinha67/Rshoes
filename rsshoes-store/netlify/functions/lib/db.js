@@ -356,11 +356,27 @@ CREATE INDEX IF NOT EXISTS idx_analytics_events_product ON analytics_events(prod
   `);
 }
 
+// Categorias reais da loja (mesmo conteúdo usado no preview estático do
+// Spck Editor via mock-api.js) — semeadas de verdade no banco na primeira
+// inicialização, para que a home mostre estas categorias também em produção
+// (Netlify + Postgres), e não só no preview sem backend.
+const REAL_CATEGORIES = [
+  { name: 'Nike', slug: 'nike', image: '/assets/categories/nike.jpg', description: 'Cortes baixos para o dia a dia.', order_index: 1 },
+  { name: 'Adidas', slug: 'adidas', image: '/assets/categories/adidas.jpg', description: 'Cano alto, presença de rua.', order_index: 2 },
+  { name: 'New Balance', slug: 'new-balance', image: '/assets/categories/new-balance.jpg', description: 'Sem cadarço, praticidade total.', order_index: 3 },
+  { name: 'Infantis', slug: 'infantis', image: '/assets/categories/infantis.jpg', description: 'Resistência para o street.', order_index: 4 },
+  { name: 'Linha premium', slug: 'linha-premium', image: '/assets/categories/linha-premium.jpg', description: 'Peças exclusivas e numeradas.', order_index: 5 },
+  { name: 'Vans', slug: 'vans', image: '/assets/categories/vans.jpg', description: 'Clássicos street e skate.', order_index: 6 },
+];
+
 async function seed() {
   const catCount = (await get('SELECT COUNT(*) AS n FROM categories')).n;
   if (Number(catCount) === 0) {
-    const insertCat = 'INSERT INTO categories (name, slug, order_index, active) VALUES (?, ?, ?, 1)';
-    await run(insertCat, ['Tênis', 'tenis', 1]);
+    const insertCat =
+      'INSERT INTO categories (name, slug, image, description, order_index, active) VALUES (?, ?, ?, ?, ?, 1)';
+    for (const c of REAL_CATEGORIES) {
+      await run(insertCat, [c.name, c.slug, c.image, c.description, c.order_index]);
+    }
   }
 }
 
